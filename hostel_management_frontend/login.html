@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in | Haven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-body">
+  <main class="login-shell">
+    <section class="login-visual">
+      <div class="brand brand-light"><span class="brand-mark">H</span><span>haven<span class="brand-dot">.</span></span></div>
+      <div class="visual-copy">
+        <span class="eyebrow light-eyebrow">A BETTER WAY TO BELONG</span>
+        <h1>Find your place.<br><em>Feel at home.</em></h1>
+        <p>A calmer, smarter way to manage student living — from first application to move-in day.</p>
+      </div>
+      <div class="visual-footer"><span>Thoughtfully managed student living</span><span>EST. 2026</span></div>
+    </section>
+    <section class="login-panel">
+      <div class="login-mobile-brand brand"><span class="brand-mark">H</span><span>haven<span class="brand-dot">.</span></span></div>
+      <div class="login-card">
+        <span class="eyebrow">WELCOME BACK</span>
+        <h2>Sign in to your space</h2>
+        <p class="muted">Enter your details to access the management portal.</p>
+        <form id="loginForm" class="form-stack">
+          <label>Email address<input id="email" type="email" placeholder="admin@haven.edu" autocomplete="username" required></label>
+          <label>Password<div class="password-wrap"><input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" required><button type="button" class="password-toggle" id="togglePassword">Show</button></div></label>
+          <div class="form-between"><label class="check-label"><input type="checkbox" id="remember"> Remember me</label><span class="muted small">Admin access</span></div>
+          <button class="btn btn-primary btn-full" type="submit">Sign in <span>↗</span></button>
+          <p id="loginMessage" class="form-message" aria-live="polite"></p>
+        </form>
+        <p class="login-note">Demo preview: use <strong>admin@haven.edu</strong> and any password.</p>
+      </div>
+      <div class="login-bottom"><span>© 2026 Haven Residence</span><span>Secure management portal</span></div>
+    </section>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>

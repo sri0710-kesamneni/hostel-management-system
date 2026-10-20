@@ -1,0 +1,32 @@
+# Java build output
+target/
+**/target/
+
+# IDE files
+.idea/
+.vscode/
+
+# Environment and secret files
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+
+# Logs
+*.log
+
+# Local configuration
+application-local.properties
+
+# Archives and generated files
+*.zip
+*.war
+*.class
+
+# Local database and IDE files
+*.db
+*.sqlite
+.idea/
+.vscode/
+hostel_management_backend/classpath.txt
