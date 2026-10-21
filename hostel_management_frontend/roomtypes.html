@@ -1,102 +1,309 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Room Types | Haven</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Types | Haven</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .room-types-content {
+            padding: 36px;
+        }
+
+        .room-types-heading {
+            margin-bottom: 28px;
+        }
+
+        .room-types-heading .eyebrow {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #81918a;
+            font-weight: 700;
+        }
+
+        .room-types-heading h1 {
+            margin: 10px 0;
+        }
+
+        .room-types-heading p {
+            color: #81918a;
+        }
+
+        .room-types-panel {
+            background: #fffefa;
+            border: 1px solid #e8e5dc;
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 24px;
+            overflow-x: auto;
+        }
+
+        .room-types-panel h2 {
+            margin-top: 0;
+        }
+
+        .room-types-panel table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        .room-types-panel th,
+        .room-types-panel td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #eae8e0;
+            text-align: left;
+        }
+
+        .room-types-panel th {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #81918a;
+        }
+
+        .room-types-panel input,
+        .room-types-panel select {
+            padding: 10px;
+            border: 1px solid #d9ded6;
+            border-radius: 8px;
+            max-width: 100%;
+        }
+
+        .room-types-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .room-types-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            font-size: 13px;
+            color: #52645b;
+        }
+
+        .room-types-form button {
+            padding: 12px 18px;
+            background: #214b3b;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .room-types-form button:hover {
+            background: #163a2d;
+        }
+
+        .room-types-message {
+            margin-top: 14px;
+            color: #214b3b;
+        }
+
+        @media (max-width: 650px) {
+            .room-types-content {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
+
 <body data-page="room-type">
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar"></aside>
 
-    <main class="main-area">
-      <header class="topbar page-topbar">
-        <button class="icon-btn mobile-menu" id="menuToggle" aria-label="Toggle menu">☰</button>
-        <div>
-          <span class="eyebrow">ROOM CONFIGURATION</span>
-          <h1>Room Types</h1>
-          <p class="muted top-description">Manage room categories, capacity and hostel fees.</p>
-        </div>
-        <div class="top-actions">
-          <div class="avatar">AD</div>
-          <div class="profile-label">
-            <strong>Administrator</strong>
-            <span>Residence manager</span>
-          </div>
-        </div>
-      </header>
+    <!-- The existing JavaScript creates the sidebar and page content. -->
+    <div class="app-shell">
 
-      <section class="page-toolbar">
-        <div class="search-box">
-          <span>⌕</span>
-          <input id="searchInput" type="search" placeholder="Search room types..." aria-label="Search room types">
-        </div>
-        <div class="toolbar-actions">
-          <button class="btn btn-primary" id="addRecordBtn">＋ Add room type</button>
-        </div>
-      </section>
+        <main class="main-content room-types-content">
 
-      <section class="panel table-panel records-panel">
-        <div class="panel-heading">
-          <div>
-            <span class="eyebrow">ROOM CONFIGURATION</span>
-            <h3>All room types</h3>
-          </div>
-          <span class="record-count" id="recordCount">0 records</span>
-        </div>
+            <header class="room-types-heading">
+                <div class="eyebrow">Residence Management</div>
+                <h1>Room Types</h1>
+                <p>Manage room categories, occupancy capacity and hostel fees.</p>
+            </header>
 
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>TYPE ID</th>
-                <th>TYPE NAME</th>
-                <th>CAPACITY</th>
-                <th>HOSTEL FEE (₹)</th>
-                <th>ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody id="recordsBody"></tbody>
-          </table>
-        </div>
+            <section class="room-types-panel">
+                <h2>Add a Room Type</h2>
 
-        <div class="empty-state hidden" id="emptyState">
-          <span>⌕</span>
-          <h3>No room types found</h3>
-          <p>Add a room type to get started.</p>
-        </div>
-      </section>
+                <form id="roomTypeForm" class="room-types-form">
+                    <label>
+                        Type ID
+                        <input type="number" id="typeId" min="1"
+                               placeholder="e.g. 7" required>
+                    </label>
 
-      <footer class="footer">
-        <span>© 2026 Haven Residence Management</span>
-        <span>Made for better student living <b>✳</b></span>
-      </footer>
-    </main>
-  </div>
+                    <label>
+                        Type Name
+                        <input type="text" id="typeName"
+                               placeholder="e.g. Two Sharing" required>
+                    </label>
 
-  <div class="modal-backdrop hidden" id="modalBackdrop">
-    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal-heading">
-        <div>
-          <span class="eyebrow">ROOM TYPE DETAILS</span>
-          <h2 id="modalTitle">Add room type</h2>
-        </div>
-        <button class="icon-btn" id="closeModal" aria-label="Close">×</button>
-      </div>
+                    <label>
+                        Capacity
+                        <input type="number" id="capacity" min="1"
+                               placeholder="e.g. 2" required>
+                    </label>
 
-      <form id="recordForm" class="modal-form">
-        <div id="formFields" class="form-grid"></div>
-        <p id="formError" class="form-message"></p>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-quiet" id="cancelModal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save room type <span>↗</span></button>
-        </div>
-      </form>
-    </section>
-  </div>
+                    <label>
+                        Hostel Fee (₹/year)
+                        <input type="number" id="hostelFee" min="0"
+                               placeholder="e.g. 65000" required>
+                    </label>
 
-  <script src="js/app.js"></script>
+                    <button type="submit">Add Room Type</button>
+                </form>
+
+                <p id="roomTypeMessage" class="room-types-message"
+                   role="status"></p>
+            </section>
+
+            <section class="room-types-panel">
+                <h2>Available Room Categories</h2>
+                <p>Room types and their capacity and annual fees.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type ID</th>
+                            <th>Type Name</th>
+                            <th>Capacity</th>
+                            <th>Hostel Fee</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roomTypesTableBody">
+                        <tr>
+                            <td colspan="4">Loading room types...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+
+    <script>
+        /*
+         * This form is a frontend demonstration using browser storage.
+         * It does not insert records into your Oracle database.
+         */
+
+        const roomTypeForm = document.getElementById("roomTypeForm");
+        const roomTypesTableBody =
+            document.getElementById("roomTypesTableBody");
+        const roomTypeMessage =
+            document.getElementById("roomTypeMessage");
+
+        const STORAGE_KEY = "haven_custom_room_types";
+
+        const initialRoomTypes = [
+            { typeId: 1, typeName: "Single", capacity: 1, hostelFee: 90000 },
+            { typeId: 2, typeName: "Two Sharing", capacity: 2, hostelFee: 65000 },
+            { typeId: 3, typeName: "Three Sharing", capacity: 3, hostelFee: 48000 },
+            { typeId: 4, typeName: "Four Sharing", capacity: 4, hostelFee: 38000 },
+            { typeId: 5, typeName: "Accessible Single", capacity: 1, hostelFee: 95000 },
+            { typeId: 6, typeName: "Premium Two Sharing", capacity: 2, hostelFee: 78000 }
+        ];
+
+        function getRoomTypes() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                return saved ? JSON.parse(saved) : [...initialRoomTypes];
+            } catch (error) {
+                return [...initialRoomTypes];
+            }
+        }
+
+        function saveRoomTypes(types) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(types));
+        }
+
+        function addCell(row, value) {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        }
+
+        function renderRoomTypes() {
+            const types = getRoomTypes();
+            roomTypesTableBody.replaceChildren();
+
+            if (types.length === 0) {
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+                cell.colSpan = 4;
+                cell.textContent = "No room types added yet.";
+                row.appendChild(cell);
+                roomTypesTableBody.appendChild(row);
+                return;
+            }
+
+            types.forEach(type => {
+                const row = document.createElement("tr");
+
+                addCell(row, type.typeId);
+                addCell(row, type.typeName);
+                addCell(row, type.capacity);
+
+                addCell(
+                    row,
+                    "₹" + Number(type.hostelFee).toLocaleString("en-IN")
+                );
+
+                roomTypesTableBody.appendChild(row);
+            });
+        }
+
+        roomTypeForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const typeId = Number(document.getElementById("typeId").value);
+            const typeName = document.getElementById("typeName").value.trim();
+            const capacity = Number(document.getElementById("capacity").value);
+            const hostelFee = Number(document.getElementById("hostelFee").value);
+
+            if (
+                !Number.isInteger(typeId) || typeId < 1 ||
+                !typeName ||
+                !Number.isInteger(capacity) || capacity < 1 ||
+                !Number.isFinite(hostelFee) || hostelFee < 0
+            ) {
+                roomTypeMessage.textContent =
+                    "Please enter valid values in all fields.";
+                return;
+            }
+
+            const types = getRoomTypes();
+
+            if (types.some(type => Number(type.typeId) === typeId)) {
+                roomTypeMessage.textContent =
+                    "That Type ID already exists. Please use another ID.";
+                return;
+            }
+
+            types.push({ typeId, typeName, capacity, hostelFee });
+
+            try {
+                saveRoomTypes(types);
+                renderRoomTypes();
+                roomTypeForm.reset();
+                roomTypeMessage.textContent =
+                    "Room type added successfully.";
+            } catch (error) {
+                roomTypeMessage.textContent =
+                    "Unable to save. Check your browser storage settings.";
+            }
+        });
+
+        renderRoomTypes();
+    </script>
+
 </body>
 </html>
