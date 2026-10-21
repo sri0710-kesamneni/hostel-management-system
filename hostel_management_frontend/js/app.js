@@ -257,6 +257,11 @@ function renderDashboard() {
     : 0;
 
   const percentage = Math.round(occupancy);
+   const donut = document.querySelector(".donut");
+
+if (donut) {
+    donut.style.setProperty("--occupancy", `${percentage}%`);
+}
 
   // Update dashboard summary cards.
   if ($("#statStudents")) {
