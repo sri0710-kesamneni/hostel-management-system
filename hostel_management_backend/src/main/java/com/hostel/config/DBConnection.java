@@ -29,7 +29,7 @@ public final class DBConnection {
         );
 
         String user = System.getenv("HOSTEL_DB_USER");
-        String password = System.getenv("HOSTEL_DB_PASSWORD");
+        String password = "[REDACTED]";
 
         // Validate credentials
         if (user == null || user.isBlank()
