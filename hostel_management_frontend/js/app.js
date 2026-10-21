@@ -1,15 +1,12 @@
 
-/* =========================================================
+/* ======================================================
    HAVEN RESIDENCE MANAGEMENT SYSTEM
-   Frontend demonstration data only.
-   Oracle integration requires a running Java backend.
-   ========================================================= */
+   Original sample values preserved
+   Browser demo storage: localStorage
+   ====================================================== */
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const page = document.body.dataset.page || "";
-const DATA_VERSION = "haven-demo-v3";
-
-/* ---------------- NAVIGATION ---------------- */
 
 const navItems = [
   ["dashboard.html", "◫", "Dashboard", "dashboard"],
@@ -22,219 +19,176 @@ const navItems = [
   ["payments.html", "₹", "Payments", "payment"]
 ];
 
-/* ---------------- MASTER SAMPLE DATA ---------------- */
-
-const hostels = [
-  ["Vellore Residency", "Girls", "North Campus"],
-  ["Green Valley Hostel", "Boys", "East Campus"],
-  ["Sapphire Hall", "Girls", "South Campus"],
-  ["Cedar House", "Boys", "West Campus"],
-  ["Lotus Residence", "Girls", "Central Campus"],
-  ["Maple Hostel", "Boys", "North Campus"],
-  ["Sunrise Hall", "Girls", "East Campus"],
-  ["Oak Residency", "Boys", "South Campus"],
-  ["Pearl House", "Girls", "Central Campus"],
-  ["River View Hostel", "Boys", "West Campus"]
-].map((h, i) => ({
-  hostelId: i + 1,
-  hostelName: h[0],
-  hostelType: h[1],
-  location: h[2]
-}));
-
-const roomTypes = [
-  ["Single", 1, 90000],
-  ["Two Sharing", 2, 65000],
-  ["Three Sharing", 3, 48000],
-  ["Four Sharing", 4, 38000],
-  ["Accessible Single", 1, 95000],
-  ["Premium Two Sharing", 2, 78000]
-].map((t, i) => ({
-  typeId: i + 1,
-  typeName: t[0],
-  capacity: t[1],
-  hostelFee: t[2]
-}));
-
-const departments = [
-  "Computer Science and Engineering",
-  "Information Technology",
-  "Electronics and Communication",
-  "Electrical Engineering",
-  "Mechanical Engineering",
-  "Civil Engineering",
-  "Data Science",
-  "Biotechnology"
-];
-
-const firstNames = [
-  "Aarav", "Ananya", "Ishaan", "Diya", "Arjun",
-  "Meera", "Vivaan", "Saanvi", "Aditya", "Kavya",
-  "Reyansh", "Aadhya", "Krish", "Ira", "Dev",
-  "Myra", "Atharv", "Pari", "Kabir", "Riya",
-  "Dhruv", "Tara", "Rohan", "Nisha", "Samar",
-  "Avni", "Yash", "Kiara", "Neil", "Aisha",
-  "Manav", "Sara", "Om", "Ishita", "Rudra",
-  "Navya", "Kian", "Pihu", "Zoya", "Ayaan"
-];
-
-const lastNames = [
-  "Sharma", "Rao", "Reddy", "Nair", "Kumar",
-  "Iyer", "Patel", "Gupta", "Verma", "Menon",
-  "Singh", "Joshi", "Malhotra", "Desai", "Shah",
-  "Kapoor", "Das", "Chawla", "Sethi", "Bansal",
-  "Mishra", "Kulkarni", "Pillai", "Thomas", "Khanna",
-  "Sinha", "Choudhary", "Anand", "Fernandes", "Khan",
-  "Roy", "George", "Prakash", "Bose", "Jain",
-  "Shetty", "Dutta", "Saxena", "Ali", "Paul"
-];
-
-const students = firstNames.map((first, i) => {
-  const regNo = "STU2026" + String(i + 1).padStart(4, "0");
-  const name = first + " " + lastNames[i];
-
-  return {
-    studentId: i + 1,
-    regNo,
-    name,
-    department: departments[i % departments.length],
-    yearOfStudy: (i % 4) + 1,
-    phone: String(9000000001 + i),
-    email: regNo.toLowerCase() + "@example.com"
-  };
-});
-
-/* ---------------- ROOMS ---------------- */
-
-const rooms = [];
-const roomPrefixes = ["N", "E", "S", "W", "C"];
-
-for (let i = 0; i < 40; i++) {
-  const hostelId = Math.floor(i / 4) + 1;
-  const localRoom = (i % 4) + 1;
-  const typeId = (i % 4) + 1;
-  const type = roomTypes.find(t => t.typeId === typeId);
-  const prefix = roomPrefixes[(hostelId - 1) % roomPrefixes.length];
-  const floorNumber = localRoom <= 2 ? 1 : 2;
-
-  rooms.push({
-    roomId: i + 1,
-    hostelId,
-    typeId,
-    roomNo: `${prefix}${floorNumber}${String(localRoom).padStart(2, "0")}`,
-    floorNumber
-  });
-}
-
-/* ---------------- APPLICATIONS ---------------- */
-
-const applications = students.map((student, i) => ({
-  applicationId: i + 1,
-  studentId: student.studentId,
-  name: student.name,
-  regNo: student.regNo,
-  hostelId: (i % 10) + 1,
-  hostel: hostels[i % 10].hostelName,
-  preferredTypeId: (i % 4) + 1,
-  roomType: roomTypes[i % 4].typeName,
-  date: `2026-${i < 30 ? "06" : "07"}-${String((i % 28) + 1).padStart(2, "0")}`,
-  status: i < 30 ? "APPROVED" :
-    i < 36 ? "PENDING" :
-    i < 38 ? "REJECTED" : "WITHDRAWN"
-}));
-
-/* ---------------- ALLOCATIONS ---------------- */
-
-const allocations = applications.slice(0, 30).map((app, i) => {
-  const room = rooms[i];
-  const hostel = hostels.find(h => h.hostelId === room.hostelId);
-
-  return {
-    allocationId: i + 1,
-    applicationId: app.applicationId,
-    roomId: room.roomId,
-    studentId: app.studentId,
-    name: app.name,
-    regNo: app.regNo,
-    hostelId: hostel.hostelId,
-    hostel: hostel.hostelName,
-    roomNo: room.roomNo,
-    date: "2026-07-01",
-    checkInDate: "2026-07-10",
-    checkOutDate: "",
-    status: "ACTIVE"
-  };
-});
-
-/* ---------------- PAYMENTS ---------------- */
-
-const payments = allocations.map((allocation, i) => {
-  const app = applications.find(
-    a => a.applicationId === allocation.applicationId
-  );
-  const type = roomTypes.find(t => t.typeId === app.preferredTypeId);
-
-  return {
-    paymentId: i + 1,
-    allocationId: allocation.allocationId,
-    name: allocation.name,
-    regNo: allocation.regNo,
-    amount: type.hostelFee,
-    date: `2026-07-${String((i % 28) + 1).padStart(2, "0")}`,
-    method: ["Online", "UPI", "Card", "Cash"][i % 4],
-    status: [4, 7, 11, 16, 19, 23, 27, 30].includes(i + 1)
-      ? "PENDING" : "PAID"
-  };
-});
-
-/* ---------------- SEED DATA ---------------- */
+/* ---------------- ORIGINAL SAMPLE DATA ---------------- */
 
 const seed = {
-  student: students,
-  hostel: hostels,
-  "room-type": roomTypes,
-  room: rooms.map((room, i) => {
-    const type = roomTypes.find(t => t.typeId === room.typeId);
-    const hostel = hostels.find(h => h.hostelId === room.hostelId);
-    const occupied = i < 30 ? Math.min(1, type.capacity) : 0;
+  hostel: [
+    { hostelId: "1", hostelName: "Vellore Residency", hostelType: "Girls", location: "North Campus" },
+    { hostelId: "2", hostelName: "Green Valley Hostel", hostelType: "Boys", location: "South Campus" },
+    { hostelId: "3", hostelName: "Sapphire Hall", hostelType: "Girls", location: "East Campus" },
+    { hostelId: "4", hostelName: "Cedar House", hostelType: "Boys", location: "West Campus" },
+    { hostelId: "5", hostelName: "Lotus Residence", hostelType: "Girls", location: "Central Campus" },
+    { hostelId: "6", hostelName: "Maple Hostel", hostelType: "Boys", location: "North Campus" },
+    { hostelId: "7", hostelName: "Sunrise Hall", hostelType: "Girls", location: "East Campus" },
+    { hostelId: "8", hostelName: "Oak Residency", hostelType: "Boys", location: "South Campus" },
+    { hostelId: "9", hostelName: "Pearl House", hostelType: "Girls", location: "Central Campus" },
+    { hostelId: "10", hostelName: "River View Hostel", hostelType: "Boys", location: "West Campus" }
+  ],
 
-    return {
-      ...room,
-      hostel: hostel.hostelName,
-      roomType: type.typeName,
-      capacity: type.capacity,
-      occupied,
-      status: occupied === 0 ? "Available" :
-        occupied >= type.capacity ? "Full" : "Partially occupied"
-    };
-  }),
-  application: applications,
-  allocation: allocations,
-  payment: payments
+  "room-type": [
+    { typeId: "1", typeName: "Single", capacity: "1", hostelFee: "90000" },
+    { typeId: "2", typeName: "Two Sharing", capacity: "2", hostelFee: "65000" },
+    { typeId: "3", typeName: "Three Sharing", capacity: "3", hostelFee: "48000" },
+    { typeId: "4", typeName: "Four Sharing", capacity: "4", hostelFee: "38000" },
+    { typeId: "5", typeName: "Accessible Single", capacity: "1", hostelFee: "95000" },
+    { typeId: "6", typeName: "Premium Two Sharing", capacity: "2", hostelFee: "78000" }
+  ],
+
+  student: [
+    {
+      name: "Aarav Sharma",
+      regNo: "VIT2026012",
+      email: "aarav.sharma@example.edu",
+      phone: "9876543210",
+      gender: "Male",
+      department: "Computer Science"
+    },
+    {
+      name: "Meera Iyer",
+      regNo: "VIT2026048",
+      email: "meera.iyer@example.edu",
+      phone: "9876543211",
+      gender: "Female",
+      department: "Electronics"
+    },
+    {
+      name: "Rohan Das",
+      regNo: "VIT2026075",
+      email: "rohan.das@example.edu",
+      phone: "9876543212",
+      gender: "Male",
+      department: "Mechanical"
+    }
+  ],
+
+  room: [
+    {
+      roomNo: "A-101",
+      block: "A Block",
+      roomType: "2 Sharing",
+      capacity: "2",
+      occupied: "1",
+      status: "Partially occupied"
+    },
+    {
+      roomNo: "A-102",
+      block: "A Block",
+      roomType: "Single",
+      capacity: "1",
+      occupied: "0",
+      status: "Available"
+    },
+    {
+      roomNo: "B-204",
+      block: "B Block",
+      roomType: "3 Sharing",
+      capacity: "3",
+      occupied: "3",
+      status: "Full"
+    }
+  ],
+
+  application: [
+    {
+      name: "Aarav Sharma",
+      regNo: "VIT2026012",
+      hostel: "A Block",
+      roomType: "2 Sharing",
+      date: "2026-10-10",
+      status: "Pending"
+    },
+    {
+      name: "Meera Iyer",
+      regNo: "VIT2026048",
+      hostel: "B Block",
+      roomType: "Single",
+      date: "2026-10-09",
+      status: "Approved"
+    },
+    {
+      name: "Rohan Das",
+      regNo: "VIT2026075",
+      hostel: "A Block",
+      roomType: "3 Sharing",
+      date: "2026-10-08",
+      status: "Pending"
+    }
+  ],
+
+  allocation: [
+    {
+      name: "Meera Iyer",
+      regNo: "VIT2026048",
+      hostel: "B Block",
+      roomNo: "B-204",
+      date: "2026-10-01",
+      status: "Active"
+    },
+    {
+      name: "Aarav Sharma",
+      regNo: "VIT2026012",
+      hostel: "A Block",
+      roomNo: "A-101",
+      date: "2026-10-04",
+      status: "Active"
+    },
+    {
+      name: "Rohan Das",
+      regNo: "VIT2026075",
+      hostel: "A Block",
+      roomNo: "A-203",
+      date: "2026-09-21",
+      status: "Pending"
+    }
+  ],
+
+  payment: [
+    {
+      name: "Meera Iyer",
+      regNo: "VIT2026048",
+      amount: "45000",
+      date: "2026-10-01",
+      method: "Online",
+      status: "Paid"
+    },
+    {
+      name: "Aarav Sharma",
+      regNo: "VIT2026012",
+      amount: "22500",
+      date: "2026-10-05",
+      method: "UPI",
+      status: "Pending"
+    },
+    {
+      name: "Rohan Das",
+      regNo: "VIT2026075",
+      amount: "45000",
+      date: "2026-10-07",
+      method: "Bank transfer",
+      status: "Paid"
+    }
+  ]
 };
 
-/* ---------------- STORAGE INITIALIZATION ---------------- */
+/* ---------------- STORAGE ---------------- */
 
-function initializeDemoData() {
-  try {
-    if (localStorage.getItem("haven_data_version") !== DATA_VERSION) {
-      Object.keys(seed).forEach(key => {
-        localStorage.setItem("haven_" + key, JSON.stringify(seed[key]));
-      });
-      localStorage.setItem("haven_data_version", DATA_VERSION);
-    }
-  } catch (error) {
-    console.error("Demo data could not be initialized:", error);
-  }
-}
-
-function getStore(key) {
+function getStore(key, fallback = []) {
   try {
     const saved = localStorage.getItem("haven_" + key);
-    return saved === null ? (seed[key] || []) : JSON.parse(saved);
+    return saved === null ? fallback : JSON.parse(saved);
   } catch (error) {
-    console.error("Could not read " + key, error);
-    return seed[key] || [];
+    console.error("Storage error:", error);
+    return fallback;
   }
 }
 
@@ -242,47 +196,43 @@ function setStore(key, value) {
   localStorage.setItem("haven_" + key, JSON.stringify(value));
 }
 
-/* ---------------- HELPERS ---------------- */
+function records(key = page) {
+  return getStore(key, seed[key] || []);
+}
+
+function recordId(row) {
+  return row.hostelId || row.typeId || row.regNo ||
+    row.roomNo || row.name;
+}
+
+/* ---------------- UTILITIES ---------------- */
 
 function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;",
-    '"': "&quot;", "'": "&#39;"
-  })[ch]);
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[c]);
+}
+
+function initials(name) {
+  return String(name || "?")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(part => part[0] || "")
+    .join("")
+    .toUpperCase();
 }
 
 function statusClass(value) {
   return String(value || "").toLowerCase().replace(/\s+/g, "-");
 }
 
-function recordId(row) {
-  return row.studentId ?? row.hostelId ?? row.typeId ??
-    row.roomId ?? row.applicationId ?? row.allocationId ??
-    row.paymentId ?? row.regNo ?? row.roomNo;
-}
-
-function initials(name) {
-  return String(name || "?").split(/\s+/).slice(0, 2)
-    .map(part => part[0] || "").join("").toUpperCase();
-}
-
-function formatDate(value) {
+function dateDisplay(value) {
   if (!value) return "—";
-  const d = new Date(value + "T00:00:00");
-  return Number.isNaN(d.getTime()) ? value :
-    d.toLocaleDateString("en-IN", {
-      day: "2-digit", month: "short", year: "numeric"
-    });
-}
-
-function displayValue(key, value) {
-  if (["amount", "hostelFee"].includes(key)) {
-    return "₹" + Number(value || 0).toLocaleString("en-IN");
-  }
-  if (["date", "checkInDate", "checkOutDate"].includes(key)) {
-    return formatDate(value);
-  }
-  return value ?? "—";
+  return escapeHtml(value);
 }
 
 /* ---------------- SIDEBAR ---------------- */
@@ -291,8 +241,8 @@ function renderSidebar() {
   const sidebar = $("#sidebar");
   if (!sidebar) return;
 
-  const pending = getStore("application").filter(
-    a => String(a.status).toLowerCase() === "pending"
+  const pending = records("application").filter(
+    row => row.status.toLowerCase() === "pending"
   ).length;
 
   sidebar.innerHTML = `
@@ -300,10 +250,13 @@ function renderSidebar() {
       <span class="brand-mark">H</span>
       <span>haven<span class="brand-dot">.</span></span>
     </a>
+
     <div class="nav-label">WORKSPACE</div>
+
     <nav class="nav-list">
       ${navItems.map(([href, icon, label, key]) => `
-        <a class="nav-link ${page === key ? "active" : ""}" href="${href}">
+        <a class="nav-link ${page === key ? "active" : ""}"
+           href="${href}">
           <span class="nav-icon">${icon}</span>
           <span>${label}</span>
           ${key === "application" && pending
@@ -311,18 +264,24 @@ function renderSidebar() {
         </a>
       `).join("")}
     </nav>
+
     <div class="sidebar-bottom">
       <div class="help-card">
         <strong>Need a hand?</strong>
         <p>Find tips for managing your residence and student records.</p>
         <a href="#" id="helpLink">Visit help centre ↗</a>
       </div>
+
       <div class="sidebar-user">
         <div class="avatar">AD</div>
-        <div><strong>Administrator</strong><span>Residence manager</span></div>
+        <div>
+          <strong>Administrator</strong>
+          <span>Residence manager</span>
+        </div>
         <a class="logout" href="login.html" title="Sign out">↗</a>
       </div>
-    </div>`;
+    </div>
+  `;
 
   $("#helpLink")?.addEventListener("click", event => {
     event.preventDefault();
@@ -330,197 +289,308 @@ function renderSidebar() {
   });
 }
 
-/* ---------------- DASHBOARD ---------------- */
-
-function renderDashboard() {
-  const students = getStore("student");
-  const rooms = getStore("room");
-  const applications = getStore("application");
-  const allocations = getStore("allocation");
-  const payments = getStore("payment");
-
-  const totalBeds = rooms.reduce((n, r) => n + Number(r.capacity || 0), 0);
-  const occupiedBeds = rooms.reduce((n, r) => n + Number(r.occupied || 0), 0);
-  const availableBeds = Math.max(0, totalBeds - occupiedBeds);
-  const pending = applications.filter(
-    a => String(a.status).toLowerCase() === "pending"
-  ).length;
-
-  if ($("#statStudents")) $("#statStudents").textContent = students.length;
-  if ($("#statRooms")) $("#statRooms").textContent = rooms.length;
-  if ($("#statBeds")) $("#statBeds").textContent = availableBeds;
-  if ($("#statApplications")) $("#statApplications").textContent = pending;
-
-  // Update the existing cards by their visible labels if they lack IDs.
-  document.querySelectorAll(".stat-card").forEach(card => {
-    const label = (card.querySelector(".stat-label, .stat-title, p")?.textContent ||
-      card.textContent).toLowerCase();
-
-    const value = card.querySelector(".stat-value, h2, h3, .stat-number");
-
-    if (!value) return;
-    if (label.includes("total students")) value.textContent = students.length;
-    if (label.includes("total rooms")) value.textContent = rooms.length;
-    if (label.includes("available beds")) value.textContent = availableBeds;
-    if (label.includes("pending applications")) value.textContent = pending;
-  });
-
-  const recentBody = $("#recentStudents");
-  if (recentBody) {
-    recentBody.innerHTML = students.slice(0, 4).map(student => {
-      const allocation = allocations.find(a =>
-        a.studentId === student.studentId &&
-        String(a.status).toLowerCase() === "active"
-      );
-
-      return `<tr>
-        <td><div class="student-cell">
-          <span class="mini-avatar">${escapeHtml(initials(student.name))}</span>
-          <span><strong>${escapeHtml(student.name)}</strong>
-          <small>${escapeHtml(student.email)}</small></span>
-        </div></td>
-        <td>${escapeHtml(student.regNo)}</td>
-        <td>${escapeHtml(allocation?.roomNo || "Not assigned")}</td>
-        <td>${escapeHtml(allocation ? "Active" : "Not allocated")}</td>
-        <td>${escapeHtml(formatDate(allocation?.date))}</td>
-      </tr>`;
-    }).join("");
-  }
-
-  const total = totalBeds ? Math.round(occupiedBeds / totalBeds * 100) : 0;
-  if ($(".donut strong")) $(".donut strong").textContent = total + "%";
-  if ($(".progress-caption strong")) {
-    $(".progress-caption strong").textContent = total + "% used";
-  }
-  if ($(".progress > span")) $(".progress > span").style.width = total + "%";
-
-  console.log("Haven demo counts", {
-    students: students.length,
-    hostels: getStore("hostel").length,
-    roomTypes: getStore("room-type").length,
-    rooms: rooms.length,
-    applications: applications.length,
-    allocations: allocations.length,
-    payments: payments.length,
-    totalBeds, occupiedBeds, availableBeds, pendingApplications: pending
-  });
-}
-
-/* ---------------- TABLE FIELD DEFINITIONS ---------------- */
+/* ---------------- FORM FIELDS ---------------- */
 
 const fieldDefs = {
-  student: [
-    ["studentId", "Student ID", "number", true],
-    ["regNo", "Registration number", "text", true],
-    ["name", "Student name", "text", true],
-    ["department", "Department", "text", true],
-    ["yearOfStudy", "Year of study", "number", true],
-    ["phone", "Phone", "tel", true],
-    ["email", "Email", "email", true]
-  ],
   hostel: [
-    ["hostelId", "Hostel ID", "number", true],
+    ["hostelId", "Hostel ID", "text", true],
     ["hostelName", "Hostel name", "text", true],
     ["hostelType", "Hostel type", "select", true, ["Girls", "Boys"]],
     ["location", "Location", "text", true]
   ],
+
   "room-type": [
-    ["typeId", "Type ID", "number", true],
-    ["typeName", "Type name", "text", true],
-    ["capacity", "Capacity", "number", true],
+    ["typeId", "Room Type ID", "text", true],
+    ["typeName", "Room type name", "text", true],
+    ["capacity", "Bed capacity", "number", true],
     ["hostelFee", "Hostel fee (₹)", "number", true]
   ],
+
+  student: [
+    ["name", "Student name", "text", true],
+    ["regNo", "Registration number", "text", true],
+    ["email", "Email address", "email", true],
+    ["phone", "Phone number", "tel", true],
+    ["gender", "Gender", "select", true, ["Male", "Female", "Other"]],
+    ["department", "Department", "text", true]
+  ],
+
   room: [
-    ["roomId", "Room ID", "number", true],
-    ["hostelId", "Hostel ID", "number", true],
-    ["typeId", "Type ID", "number", true],
     ["roomNo", "Room number", "text", true],
-    ["floorNumber", "Floor number", "number", true],
-    ["capacity", "Capacity", "number", true],
+    ["block", "Hostel", "select", true,
+      records("hostel").map(h => h.hostelName)],
+    ["roomType", "Room type", "select", true,
+      records("room-type").map(t => t.typeName)],
+    ["capacity", "Bed capacity", "number", true],
     ["occupied", "Occupied beds", "number", true],
     ["status", "Status", "select", true,
       ["Available", "Partially occupied", "Full"]]
   ],
+
   application: [
-    ["applicationId", "Application ID", "number", true],
-    ["studentId", "Student ID", "number", true],
-    ["hostelId", "Preferred hostel ID", "number", true],
-    ["preferredTypeId", "Room type ID", "number", true],
+    ["name", "Student name", "text", true],
+    ["regNo", "Registration number", "select", true,
+      records("student").map(s => s.regNo)],
+    ["hostel", "Preferred hostel", "select", true,
+      records("hostel").map(h => h.hostelName)],
+    ["roomType", "Room type", "select", true,
+      records("room-type").map(t => t.typeName)],
     ["date", "Application date", "date", true],
     ["status", "Status", "select", true,
-      ["PENDING", "APPROVED", "REJECTED", "WITHDRAWN"]]
+      ["Pending", "Approved", "Rejected", "Withdrawn"]]
   ],
+
   allocation: [
-    ["allocationId", "Allocation ID", "number", true],
-    ["applicationId", "Application ID", "number", true],
-    ["roomId", "Room ID", "number", true],
+    ["name", "Student name", "text", true],
+    ["regNo", "Registration number", "select", true,
+      records("student").map(s => s.regNo)],
+    ["hostel", "Hostel", "select", true,
+      records("hostel").map(h => h.hostelName)],
+    ["roomNo", "Room number", "select", true,
+      records("room").map(r => r.roomNo)],
     ["date", "Allocation date", "date", true],
-    ["checkInDate", "Check-in date", "date", true],
-    ["checkOutDate", "Check-out date", "date", false],
     ["status", "Status", "select", true,
-      ["ACTIVE", "COMPLETED", "CANCELLED"]]
+      ["Active", "Pending", "Completed", "Cancelled"]]
   ],
+
   payment: [
-    ["paymentId", "Payment ID", "number", true],
-    ["allocationId", "Allocation ID", "number", true],
+    ["name", "Student name", "text", true],
+    ["regNo", "Registration number", "select", true,
+      records("student").map(s => s.regNo)],
     ["amount", "Amount (₹)", "number", true],
     ["date", "Payment date", "date", true],
-    ["status", "Payment status", "select", true,
-      ["PAID", "PENDING", "FAILED", "REFUNDED"]],
     ["method", "Payment method", "select", true,
-      ["Online", "UPI", "Card", "Cash"]]
+      ["Online", "UPI", "Cash", "Bank transfer"]],
+    ["status", "Status", "select", true,
+      ["Paid", "Pending", "Failed", "Refunded"]]
   ]
 };
 
-/* ---------------- RECORD TABLE ---------------- */
+/* ---------------- REFERENTIAL INTEGRITY ---------------- */
 
-function records() {
-  return getStore(page);
+function validateRecord(type, data, oldId = "") {
+  const students = records("student");
+  const hostels = records("hostel");
+  const types = records("room-type");
+  const rooms = records("room");
+  const applications = records("application");
+  const allocations = records("allocation");
+  const payments = records("payment");
+
+  if (type === "room") {
+    if (!hostels.some(h => h.hostelName === data.block)) {
+      return "Foreign-key error: select an existing hostel.";
+    }
+
+    const roomType = types.find(t => t.typeName === data.roomType);
+    if (!roomType) {
+      return "Foreign-key error: select an existing room type.";
+    }
+
+    if (Number(data.capacity) !== Number(roomType.capacity)) {
+      return "Room capacity must match the selected room type.";
+    }
+
+    if (Number(data.occupied) > Number(data.capacity)) {
+      return "Occupied beds cannot exceed room capacity.";
+    }
+  }
+
+  if (type === "application") {
+    const student = students.find(s => s.regNo === data.regNo);
+    if (!student) {
+      return "Foreign-key error: select an existing student.";
+    }
+
+    if (!hostels.some(h => h.hostelName === data.hostel)) {
+      return "Foreign-key error: select an existing hostel.";
+    }
+
+    if (!types.some(t => t.typeName === data.roomType)) {
+      return "Foreign-key error: select an existing room type.";
+    }
+
+    data.name = student.name;
+  }
+
+  if (type === "allocation") {
+    const student = students.find(s => s.regNo === data.regNo);
+    if (!student) {
+      return "Foreign-key error: select an existing student.";
+    }
+
+    const room = rooms.find(r => r.roomNo === data.roomNo);
+    if (!room) {
+      return "Foreign-key error: select an existing room.";
+    }
+
+    if (room.block !== data.hostel) {
+      return "The selected room does not belong to that hostel.";
+    }
+
+    const approved = applications.some(a =>
+      a.regNo === data.regNo && a.status === "Approved"
+    );
+
+    if (!approved) {
+      return "Approve the student's application before allocating a room.";
+    }
+
+    const duplicate = allocations.some(a =>
+      a.regNo === data.regNo &&
+      a.status === "Active" &&
+      a.regNo !== oldId
+    );
+
+    if (duplicate) {
+      return "This student already has an active allocation.";
+    }
+
+    data.name = student.name;
+  }
+
+  if (type === "payment") {
+    const student = students.find(s => s.regNo === data.regNo);
+    if (!student) {
+      return "Foreign-key error: select an existing student.";
+    }
+
+    const hasAllocation = allocations.some(a =>
+      a.regNo === data.regNo && a.status === "Active"
+    );
+
+    if (!hasAllocation) {
+      return "A payment must belong to a student with an active allocation.";
+    }
+
+    if (Number(data.amount) <= 0) {
+      return "Payment amount must be greater than zero.";
+    }
+
+    data.name = student.name;
+  }
+
+  return "";
 }
+
+/* ---------------- PREVENT INVALID DELETIONS ---------------- */
+
+function deletionError(type, row) {
+  const applications = records("application");
+  const allocations = records("allocation");
+  const payments = records("payment");
+  const rooms = records("room");
+
+  if (type === "hostel" &&
+      rooms.some(r => r.block === row.hostelName)) {
+    return "Cannot delete this hostel because rooms refer to it.";
+  }
+
+  if (type === "room-type" &&
+      rooms.some(r => r.roomType === row.typeName)) {
+    return "Cannot delete this room type because rooms refer to it.";
+  }
+
+  if (type === "room-type" &&
+      applications.some(a => a.roomType === row.typeName)) {
+    return "Cannot delete this room type because applications refer to it.";
+  }
+
+  if (type === "student" &&
+      applications.some(a => a.regNo === row.regNo)) {
+    return "Cannot delete this student because applications refer to them.";
+  }
+
+  if (type === "student" &&
+      allocations.some(a => a.regNo === row.regNo)) {
+    return "Cannot delete this student because allocations refer to them.";
+  }
+
+  if (type === "student" &&
+      payments.some(p => p.regNo === row.regNo)) {
+    return "Cannot delete this student because payments refer to them.";
+  }
+
+  if (type === "room" &&
+      allocations.some(a => a.roomNo === row.roomNo)) {
+    return "Cannot delete this room because an allocation refers to it.";
+  }
+
+  if (type === "application" &&
+      allocations.some(a =>
+        a.regNo === row.regNo && a.status === "Active")) {
+    return "Cannot delete this application while an active allocation depends on it.";
+  }
+
+  if (type === "allocation" &&
+      payments.some(p => p.regNo === row.regNo)) {
+    return "Cannot delete this allocation while payment records depend on it.";
+  }
+
+  return "";
+}
+
+/* ---------------- RENDER TABLE ---------------- */
 
 function renderRecords() {
   const body = $("#recordsBody");
   if (!body) return;
 
-  const query = ($("#searchInput")?.value || "").toLowerCase().trim();
+  const search = ($("#searchInput")?.value || "").toLowerCase().trim();
   const filter = $("#statusFilter")?.value || "";
-  const fields = fieldDefs[page] || [];
 
-  const visible = records().filter(record => {
-    const matchesSearch = !query ||
-      Object.values(record).some(value =>
-        String(value ?? "").toLowerCase().includes(query)
+  const rows = records().filter(row => {
+    const matchesSearch = !search ||
+      Object.values(row).some(value =>
+        String(value).toLowerCase().includes(search)
       );
 
-    const matchesFilter = !filter ||
-      String(page === "hostel" ? record.hostelType : record.status) === filter;
+    const filterValue = page === "hostel"
+      ? row.hostelType
+      : page === "room-type"
+        ? ""
+        : row.status;
 
-    return matchesSearch && matchesFilter;
+    return matchesSearch && (!filter || filterValue === filter);
   });
 
-  body.innerHTML = visible.map(record => `
-    <tr>
-      ${fields.map(([key]) => `<td>${
-        key === "status"
-          ? `<span class="status ${statusClass(record[key])}">${escapeHtml(record[key])}</span>`
-          : key === "name"
-            ? `<div class="student-cell"><span class="mini-avatar">${escapeHtml(initials(record.name))}</span><strong>${escapeHtml(record.name)}</strong></div>`
-            : escapeHtml(displayValue(key, record[key]))
-      }</td>`).join("")}
-      <td><div class="table-actions">
-        <button type="button" class="table-action" data-edit="${escapeHtml(recordId(record))}">Edit</button>
-        <button type="button" class="table-action delete" data-delete="${escapeHtml(recordId(record))}">Delete</button>
-      </div></td>
-    </tr>`).join("");
+  const fields = fieldDefs[page] || [];
 
-  if (!visible.length) {
-    body.innerHTML = `<tr><td colspan="${fields.length + 1}">No matching records. Try another search or add a record.</td></tr>`;
-  }
+  body.innerHTML = rows.map(row => `
+    <tr>
+      ${fields.map(([key]) => `
+        <td>
+          ${key === "status"
+            ? `<span class="status ${statusClass(row[key])}">
+                 ${escapeHtml(row[key] || "—")}
+               </span>`
+            : key === "name"
+              ? `<div class="student-cell">
+                   <span class="mini-avatar">${escapeHtml(initials(row.name))}</span>
+                   <strong>${escapeHtml(row[key] || "—")}</strong>
+                 </div>`
+              : key === "hostelFee" || key === "amount"
+                ? "₹ " + Number(row[key] || 0).toLocaleString("en-IN")
+                : escapeHtml(row[key] ?? "—")}
+        </td>
+      `).join("")}
+      <td>
+        <div class="table-actions">
+          <button type="button" class="table-action"
+            data-edit="${escapeHtml(recordId(row))}">Edit</button>
+          <button type="button" class="table-action delete"
+            data-delete="${escapeHtml(recordId(row))}">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
 
   if ($("#recordCount")) {
     $("#recordCount").textContent =
-      `${visible.length} record${visible.length === 1 ? "" : "s"}`;
+      `${rows.length} record${rows.length === 1 ? "" : "s"}`;
   }
+
+  $("#emptyState")?.classList.toggle("hidden", rows.length !== 0);
 
   body.querySelectorAll("[data-edit]").forEach(button => {
     button.addEventListener("click", () => openModal(button.dataset.edit));
@@ -531,48 +601,61 @@ function renderRecords() {
   });
 }
 
-/* ---------------- ADD / EDIT ---------------- */
+/* ---------------- ADD / EDIT FORM ---------------- */
 
-function openModal(id = null) {
-  const modal = $("#modalBackdrop");
+function openModal(id = "") {
   const form = $("#recordForm");
   const fields = $("#formFields");
-  if (!modal || !form || !fields) return;
+  const modal = $("#modalBackdrop");
 
-  const old = id == null ? null : records().find(
-    record => String(recordId(record)) === String(id)
-  );
+  if (!form || !fields || !modal) return;
 
-  const titles = {
-    student: "student",
-    hostel: "hostel",
-    "room-type": "room type",
-    room: "room",
-    application: "application",
-    allocation: "allocation",
-    payment: "payment"
+  const row = id
+    ? records().find(r => String(recordId(r)) === String(id))
+    : null;
+
+  const labels = {
+    hostel: "Hostel",
+    "room-type": "Room Type",
+    student: "Student",
+    room: "Room",
+    application: "Application",
+    allocation: "Allocation",
+    payment: "Payment"
   };
 
   $("#modalTitle").textContent =
-    (old ? "Edit " : "Add ") + (titles[page] || "record");
+    `${row ? "Edit" : "Add"} ${labels[page] || "Record"}`;
 
-  fields.innerHTML = fieldDefs[page].map(
-    ([key, label, type, required, options]) => `
-      <label>${escapeHtml(label)}
-        ${type === "select"
-          ? `<select name="${key}" ${required ? "required" : ""}>
-              ${options.map(option => `<option value="${escapeHtml(option)}"
-                ${old && String(old[key]) === option ? "selected" : ""}>
-                ${escapeHtml(option)}</option>`).join("")}
-             </select>`
-          : `<input name="${key}" type="${type}"
-              value="${escapeHtml(old?.[key] ?? "")}"
-              ${required ? "required" : ""}
-              ${type === "number" ? 'min="0"' : ""}>`}
-      </label>`
+  fields.innerHTML = (fieldDefs[page] || []).map(
+    ([key, label, type, required, options]) => {
+      if (type === "select") {
+        return `
+          <label>${label}
+            <select name="${key}" ${required ? "required" : ""}>
+              <option value="">Choose ${label.toLowerCase()}</option>
+              ${(options || []).map(option => `
+                <option value="${escapeHtml(option)}"
+                  ${String(row?.[key] ?? "") === String(option)
+                    ? "selected" : ""}>
+                  ${escapeHtml(option)}
+                </option>
+              `).join("")}
+            </select>
+          </label>`;
+      }
+
+      return `
+        <label>${label}
+          <input name="${key}" type="${type}"
+            value="${escapeHtml(row?.[key] ?? "")}"
+            ${required ? "required" : ""}
+            ${type === "number" ? 'min="0"' : ""}>
+        </label>`;
+    }
   ).join("");
 
-  form.dataset.editId = id ?? "";
+  form.dataset.editId = id;
   if ($("#formError")) $("#formError").textContent = "";
   modal.classList.remove("hidden");
 }
@@ -581,95 +664,180 @@ function closeModal() {
   $("#modalBackdrop")?.classList.add("hidden");
 }
 
-function deleteRecord(id) {
-  const list = records();
-  const record = list.find(r => String(recordId(r)) === String(id));
-  if (!record) return;
-
-  if (!confirm("Delete this record from the demo website?")) return;
-
-  setStore(page, list.filter(r => String(recordId(r)) !== String(id)));
-  renderRecords();
-}
-
 function saveRecord(event) {
   event.preventDefault();
 
   const form = event.currentTarget;
-  const error = $("#formError");
-  if (error) error.textContent = "";
-
   const data = Object.fromEntries(new FormData(form).entries());
-  const numberFields = new Set([
-    "studentId", "yearOfStudy", "hostelId", "typeId", "capacity",
-    "hostelFee", "roomId", "floorNumber", "occupied",
-    "applicationId", "preferredTypeId", "allocationId", "paymentId",
-    "amount"
-  ]);
-
-  Object.keys(data).forEach(key => {
-    if (numberFields.has(key) && data[key] !== "") {
-      data[key] = Number(data[key]);
-    }
-  });
+  const errorBox = $("#formError");
+  const oldId = form.dataset.editId || "";
 
   const fail = message => {
-    if (error) error.textContent = message;
+    if (errorBox) errorBox.textContent = message;
     else alert(message);
   };
 
-  if (page === "room-type" &&
-      (data.capacity < 1 || data.hostelFee < 0)) {
-    fail("Capacity must be at least 1 and fee cannot be negative.");
-    return;
-  }
-
-  if (page === "room" &&
-      (data.capacity < 1 || data.occupied > data.capacity)) {
-    fail("Check the capacity and occupied-bed values.");
-    return;
-  }
-
-  if (page === "payment" && data.amount <= 0) {
-    fail("Payment amount must be greater than zero.");
-    return;
-  }
+  if (errorBox) errorBox.textContent = "";
 
   const list = records();
-  const editId = form.dataset.editId;
 
-  const idKey = {
-    student: "studentId",
-    hostel: "hostelId",
-    "room-type": "typeId",
-    room: "roomId",
-    application: "applicationId",
-    allocation: "allocationId",
-    payment: "paymentId"
-  }[page];
-
-  const duplicate = list.some(record =>
-    String(record[idKey]) === String(data[idKey]) &&
-    String(recordId(record)) !== String(editId)
-  );
-
-  if (duplicate) {
-    fail("This ID already exists. Please use a different ID.");
+  if (page === "hostel" && list.some(row =>
+    (row.hostelId === data.hostelId ||
+     row.hostelName.toLowerCase() === data.hostelName.toLowerCase()) &&
+    row.hostelId !== oldId
+  )) {
+    fail("This hostel ID or name already exists.");
     return;
   }
 
-  const updated = editId
-    ? list.map(record =>
-        String(recordId(record)) === String(editId) ? data : record
+  if (page === "room-type" && list.some(row =>
+    (row.typeId === data.typeId ||
+     row.typeName.toLowerCase() === data.typeName.toLowerCase()) &&
+    row.typeId !== oldId
+  )) {
+    fail("This room type ID or name already exists.");
+    return;
+  }
+
+  if (page === "student" && list.some(row =>
+    row.regNo === data.regNo && row.regNo !== oldId
+  )) {
+    fail("This registration number already exists.");
+    return;
+  }
+
+  if (page === "room" && list.some(row =>
+    row.roomNo === data.roomNo && row.roomNo !== oldId
+  )) {
+    fail("This room number already exists.");
+    return;
+  }
+
+  if (page === "room") {
+    const roomType = records("room-type").find(
+      t => t.typeName === data.roomType
+    );
+
+    if (!roomType) {
+      fail("Select an existing room type.");
+      return;
+    }
+
+    data.capacity = String(roomType.capacity);
+    data.status = Number(data.occupied) === 0
+      ? "Available"
+      : Number(data.occupied) >= Number(data.capacity)
+        ? "Full" : "Partially occupied";
+  }
+
+  const relationshipProblem = validateRecord(page, data, oldId);
+
+  if (relationshipProblem) {
+    fail(relationshipProblem);
+    return;
+  }
+
+  const next = oldId
+    ? list.map(row =>
+        String(recordId(row)) === String(oldId) ? data : row
       )
     : [data, ...list];
 
-  setStore(page, updated);
+  setStore(page, next);
   closeModal();
   renderRecords();
 }
 
-/* ---------------- LOGIN DEMO ---------------- */
+/* ---------------- DELETE RECORD ---------------- */
+
+function deleteRecord(id) {
+  const row = records().find(
+    item => String(recordId(item)) === String(id)
+  );
+
+  if (!row) return;
+
+  const problem = deletionError(page, row);
+
+  if (problem) {
+    alert(problem);
+    return;
+  }
+
+  if (!confirm("Are you sure you want to delete this record?")) return;
+
+  setStore(page, records().filter(
+    item => String(recordId(item)) !== String(id)
+  ));
+
+  renderRecords();
+}
+
+/* ---------------- DASHBOARD ---------------- */
+
+function renderDashboard() {
+  const students = records("student");
+  const rooms = records("room");
+  const applications = records("application");
+
+  const capacity = rooms.reduce(
+    (sum, room) => sum + Number(room.capacity || 0), 0
+  );
+
+  const occupied = rooms.reduce(
+    (sum, room) => sum + Number(room.occupied || 0), 0
+  );
+
+  const available = Math.max(0, capacity - occupied);
+
+  if ($("#statStudents")) $("#statStudents").textContent = students.length;
+  if ($("#statRooms")) $("#statRooms").textContent = rooms.length;
+  if ($("#statBeds")) $("#statBeds").textContent = available;
+
+  if ($("#statApplications")) {
+    $("#statApplications").textContent = applications.filter(
+      a => a.status.toLowerCase() === "pending"
+    ).length;
+  }
+
+  const recent = $("#recentStudents");
+  if (recent) {
+    recent.innerHTML = students.slice(0, 4).map(student => {
+      const allocation = records("allocation").find(a =>
+        a.regNo === student.regNo && a.status === "Active"
+      );
+
+      return `
+        <tr>
+          <td>
+            <div class="student-cell">
+              <span class="mini-avatar">${escapeHtml(initials(student.name))}</span>
+              <span>
+                <strong>${escapeHtml(student.name)}</strong>
+                <small>${escapeHtml(student.email)}</small>
+              </span>
+            </div>
+          </td>
+          <td>${escapeHtml(student.regNo)}</td>
+          <td>${escapeHtml(allocation?.roomNo || "Not assigned")}</td>
+          <td>${allocation ? "Active" : "Not allocated"}</td>
+          <td>${dateDisplay(allocation?.date)}</td>
+        </tr>`;
+    }).join("");
+  }
+
+  const percentage = capacity ? Math.round(occupied / capacity * 100) : 0;
+
+  if ($(".donut strong")) $(".donut strong").textContent = percentage + "%";
+  if ($(".progress-caption strong")) {
+    $(".progress-caption strong").textContent = percentage + "% used";
+  }
+  if ($(".progress > span")) {
+    $(".progress > span").style.width = percentage + "%";
+  }
+}
+
+/* ---------------- LOGIN ---------------- */
 
 function setupLogin() {
   const form = $("#loginForm");
@@ -683,20 +851,24 @@ function setupLogin() {
   form.addEventListener("submit", event => {
     event.preventDefault();
 
-    if (!$("#email")?.value.trim() || !$("#password")?.value) {
-      if ($("#loginMessage")) {
-        $("#loginMessage").textContent = "Enter your email and password.";
-      }
+    const email = $("#email")?.value.trim();
+    const password = $("#password")?.value;
+    const message = $("#loginMessage");
+
+    if (!email || !password) {
+      if (message) message.textContent = "Please complete both fields.";
       return;
     }
 
-    // Demonstration only; this is not secure server authentication.
-    sessionStorage.setItem("haven_demo_user", $("#email").value.trim());
-    window.location.href = "dashboard.html";
+    sessionStorage.setItem("haven_demo_user", email);
+
+    if (message) message.textContent = "Opening dashboard...";
+
+    location.href = "dashboard.html";
   });
 }
 
-/* ---------------- INITIALIZATION ---------------- */
+/* ---------------- INITIALIZE ---------------- */
 
 function setupPage() {
   renderSidebar();
@@ -713,20 +885,21 @@ function setupPage() {
   if (!fieldDefs[page]) return;
 
   renderRecords();
+
   $("#searchInput")?.addEventListener("input", renderRecords);
   $("#statusFilter")?.addEventListener("change", renderRecords);
   $("#addRecordBtn")?.addEventListener("click", () => openModal());
   $("#closeModal")?.addEventListener("click", closeModal);
   $("#cancelModal")?.addEventListener("click", closeModal);
-  $("#recordForm")?.addEventListener("submit", saveRecord);
 
   $("#modalBackdrop")?.addEventListener("click", event => {
     if (event.target.id === "modalBackdrop") closeModal();
   });
+
+  $("#recordForm")?.addEventListener("submit", saveRecord);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initializeDemoData();
   setupLogin();
   setupPage();
 });
