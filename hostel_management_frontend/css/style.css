@@ -1,37 +1,242 @@
 
-/* Occupancy Overview - Accurate Donut Percentage */
+/* ===== HAVEN DASHBOARD STYLE RECOVERY ===== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: #17231f;
+    background: #f5f5ef;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+main,
+.main-content,
+.dashboard-content {
+    min-width: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+strong {
+    color: #17231f;
+}
+
+.nav-link,
+.brand,
+.sidebar-user,
+.student-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-link {
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #53665e;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #e8eee7;
+    color: #244f40;
+}
+
+.brand {
+    font-size: 24px;
+    font-weight: 750;
+    padding: 18px;
+}
+
+.brand-mark,
+.avatar,
+.mini-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #244f40;
+    color: white;
+}
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+}
+
+.brand-dot {
+    color: #caa56c;
+}
+
+.nav-label {
+    padding: 18px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #829087;
+}
+
+.card,
+.stat-card,
+.occupancy-panel,
+.help-card {
+    background: #fffefa;
+    border: 1px solid #e7e7df;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 18px rgb(32 54 43 / 4%);
+}
+
+.stat-card {
+    min-width: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+input,
+select {
+    max-width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #dfe4dc;
+    border-radius: 9px;
+    background: #fffefa;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 14px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eceee7;
+}
+
+th {
+    color: #728077;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #eef1e8;
+    font-size: 12px;
+}
+
+.status.active,
+.status.paid,
+.status.approved {
+    color: #244f40;
+    background: #e4eee5;
+}
+
+.status.pending {
+    color: #946b27;
+    background: #f8efd9;
+}
+
+/* Occupancy donut: exact arc percentage */
+
 .donut {
-  --occupancy: 30%;
+    --occupancy: 30%;
 
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  position: relative;
+    width: 180px;
+    height: 180px;
+    flex: 0 0 180px;
+    position: relative;
+    border-radius: 50%;
 
-  background: conic-gradient(
-    from 0deg,
-    #244f40 0% var(--occupancy),
-    #e7e8df var(--occupancy) 100%
-  );
+    background: conic-gradient(
+        from 0deg,
+        #244f40 0 var(--occupancy),
+        #e7e8df var(--occupancy) 100%
+    ) !important;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-/* Inner circle */
 .donut::before {
-  content: "";
-  position: absolute;
-  inset: 8%;
-  background: #fffefa;
-  border-radius: 50%;
+    content: "";
+    position: absolute;
+    inset: 8%;
+    background: #fffefa;
+    border-radius: 50%;
 }
 
-/* Percentage text */
 .donut strong,
 .donut span {
-  position: relative;
-  z-index: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.progress {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #e7e8df;
+}
+
+.progress > span {
+    display: block;
+    height: 100%;
+    width: 30%;
+    border-radius: inherit;
+    background: #244f40;
+    transition: width 0.3s ease;
+}
+
+.avatar,
+.mini-avatar {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.student-cell {
+    min-width: 160px;
+}
+
+@media (max-width: 768px) {
+    .card,
+    .stat-card,
+    .occupancy-panel {
+        padding: 16px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
 }
