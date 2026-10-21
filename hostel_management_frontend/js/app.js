@@ -235,141 +235,59 @@ function dateDisplay(value) {
   return escapeHtml(value);
 }
 
+/* ---------------- SIDEBAR ---------------- */
 
-function renderDashboard() {
-  const students = records("student");
-  const rooms = records("room");
-  const applications = records("application");
+function renderSidebar() {
+  const sidebar = $("#sidebar");
+  if (!sidebar) return;
 
-  // Calculate actual bed occupancy.
-  const totalCapacity = rooms.reduce(
-    (sum, room) => sum + Number(room.capacity || 0), 0
-  );
-
-  const occupiedBeds = rooms.reduce(
-    (sum, room) => sum + Number(room.occupied || 0), 0
-  );
-
-  const availableBeds = Math.max(0, totalCapacity - occupiedBeds);
-
-  const occupancy = totalCapacity > 0
-    ? (occupiedBeds / totalCapacity) * 100
-    : 0;
-
-  const percentage = Math.round(occupancy);
-   const donut = document.querySelector(".donut");
-
-if (donut) {
-    donut.style.setProperty("--occupancy", `${percentage}%`);
-}
-
-  // Update dashboard summary cards.
-  if ($("#statStudents")) {
-    $("#statStudents").textContent = students.length;
-  }
-
-  if ($("#statRooms")) {
-    $("#statRooms").textContent = rooms.length;
-  }
-
-  if ($("#statBeds")) {
-    $("#statBeds").textContent = availableBeds;
-  }
-
-  if ($("#statApplications")) {
-    $("#statApplications").textContent = applications.filter(
-      app => app.status.toLowerCase() === "pending"
-    ).length;
-  }
-
-  // Update the occupancy donut percentage.
-  if ($(".donut strong")) {
-    $(".donut strong").textContent = percentage + "%";
-  }
-
-  // Update the progress bar percentage.
-  if ($(".progress-caption strong")) {
-    $(".progress-caption strong").textContent = percentage + "% used";
-  }
-
-  if ($(".progress > span")) {
-    $(".progress > span").style.width = percentage + "%";
-  }
-
-  // Calculate room categories.
-  const occupiedRooms = rooms.filter(room =>
-    Number(room.occupied) >= Number(room.capacity) &&
-    Number(room.capacity) > 0
+  const pending = records("application").filter(
+    row => row.status.toLowerCase() === "pending"
   ).length;
 
-  const partiallyFilledRooms = rooms.filter(room =>
-    Number(room.occupied) > 0 &&
-    Number(room.occupied) < Number(room.capacity)
-  ).length;
+  sidebar.innerHTML = `
+    <a class="brand" href="dashboard.html">
+      <span class="brand-mark">H</span>
+      <span>haven<span class="brand-dot">.</span></span>
+    </a>
 
-  const emptyRooms = rooms.filter(room =>
-    Number(room.occupied) === 0
-  ).length;
+    <div class="nav-label">WORKSPACE</div>
 
-  // Update the three legend counts.
-  const legend = document.querySelectorAll(
-    ".occupancy-panel .legend > div"
-  );
+    <nav class="nav-list">
+      ${navItems.map(([href, icon, label, key]) => `
+        <a class="nav-link ${page === key ? "active" : ""}"
+           href="${href}">
+          <span class="nav-icon">${icon}</span>
+          <span>${label}</span>
+          ${key === "application" && pending
+            ? `<span class="nav-count">${pending}</span>` : ""}
+        </a>
+      `).join("")}
+    </nav>
 
-  if (legend.length >= 3) {
-    legend[0].querySelector("strong").textContent =
-      occupiedRooms + " rooms";
+    <div class="sidebar-bottom">
+      <div class="help-card">
+        <strong>Need a hand?</strong>
+        <p>Find tips for managing your residence and student records.</p>
+        <a href="#" id="helpLink">Visit help centre ↗</a>
+      </div>
 
-    legend[1].querySelector("strong").textContent =
-      partiallyFilledRooms + " rooms";
+      <div class="sidebar-user">
+        <div class="avatar">AD</div>
+        <div>
+          <strong>Administrator</strong>
+          <span>Residence manager</span>
+        </div>
+        <a class="logout" href="login.html" title="Sign out">↗</a>
+      </div>
+    </div>
+  `;
 
-    legend[2].querySelector("strong").textContent =
-      emptyRooms + " rooms";
-  }
-
-  // Update recent student records.
-  const recent = $("#recentStudents");
-
-  if (recent) {
-    recent.innerHTML = students.slice(0, 4).map(student => {
-      const allocation = records("allocation").find(item =>
-        item.regNo === student.regNo &&
-        item.status === "Active"
-      );
-
-      return `
-        <tr>
-          <td>
-            <div class="student-cell">
-              <span class="mini-avatar">
-                ${escapeHtml(initials(student.name))}
-              </span>
-              <span>
-                <strong>${escapeHtml(student.name)}</strong>
-                <small>${escapeHtml(student.email || "")}</small>
-              </span>
-            </div>
-          </td>
-          <td>${escapeHtml(student.regNo)}</td>
-          <td>${escapeHtml(allocation?.roomNo || "Not assigned")}</td>
-          <td>${allocation ? "Active" : "Not allocated"}</td>
-          <td>${escapeHtml(allocation?.date || "—")}</td>
-        </tr>
-      `;
-    }).join("");
-  }
-
-  console.log({
-    totalCapacity,
-    occupiedBeds,
-    availableBeds,
-    occupancyPercentage: occupancy,
-    fullRooms: occupiedRooms,
-    partiallyFilledRooms,
-    emptyRooms
+  $("#helpLink")?.addEventListener("click", event => {
+    event.preventDefault();
+    alert("Contact your project administrator for help.");
   });
 }
-
 
 /* ---------------- FORM FIELDS ---------------- */
 
