@@ -1,24 +1,346 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard | Haven</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css"></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Dashboard | Haven</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
 <body data-page="dashboard">
-<div class="app-shell"><aside class="sidebar" id="sidebar"></aside><main class="main-area">
-<header class="topbar"><button class="icon-btn mobile-menu" id="menuToggle" aria-label="Toggle menu">☰</button><div><span class="eyebrow">MONDAY, OCTOBER 12, 2026</span><h1>Good morning, Admin <span class="wave">✳</span></h1></div><div class="top-actions"><button class="icon-btn" title="Notifications">♧<i class="notification-dot"></i></button><div class="avatar">AD</div><div class="profile-label"><strong>Administrator</strong><span>Residence manager</span></div></div></header>
-<section class="welcome-banner"><div><span class="eyebrow light-eyebrow">YOUR RESIDENCE AT A GLANCE</span><h2>Everything in its<br><em>right place.</em></h2><p>Here’s what’s happening across your residence today.</p><a class="btn btn-light" href="applications.html">Review applications <span>↗</span></a></div><div class="banner-art"><div class="art-circle"></div><div class="art-building"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="art-leaf">✳</div></div></section>
-<section class="section-heading"><div><span class="eyebrow">OVERVIEW</span><h2>Your residence, in numbers</h2></div><span class="date-pill">● Live overview</span></section>
-<section class="stats-grid">
-<article class="stat-card"><div class="stat-top"><span>Total students</span><span class="stat-icon sage">♙</span></div><strong id="statStudents">248</strong><div class="stat-foot"><span class="trend">↗ 8.2%</span><span>vs. last month</span></div></article>
-<article class="stat-card"><div class="stat-top"><span>Room capacity</span><span class="stat-icon sand">⌂</span></div><strong id="statRooms">86</strong><div class="stat-foot"><span class="trend">64 occupied</span><span>total rooms</span></div></article>
-<article class="stat-card"><div class="stat-top"><span>Available beds</span><span class="stat-icon blue">✳</span></div><strong id="statBeds">42</strong><div class="stat-foot"><span class="trend">Ready to assign</span><span>across residence</span></div></article>
-<article class="stat-card"><div class="stat-top"><span>Pending applications</span><span class="stat-icon rose">◷</span></div><strong id="statApplications">18</strong><div class="stat-foot"><span class="trend warning-text">Needs attention</span><a href="applications.html">Review →</a></div></article>
-</section>
-<section class="dashboard-grid">
-<article class="panel occupancy-panel"><div class="panel-heading"><div><span class="eyebrow">ROOM STATUS</span><h3>Occupancy overview</h3></div><a href="rooms.html" class="text-link">View rooms ↗</a></div><div class="occupancy-content"><div class="donut"><div><strong>74%</strong><span>occupied</span></div></div><div class="legend"><div><i class="legend-dot dot-green"></i><span>Occupied</span><strong>64 rooms</strong></div><div><i class="legend-dot dot-yellow"></i><span>Partially filled</span><strong>12 rooms</strong></div><div><i class="legend-dot dot-gray"></i><span>Available</span><strong>10 rooms</strong></div></div></div><div class="progress-caption"><span>Overall capacity</span><strong>74% used</strong></div><div class="progress"><span style="width:74%"></span></div></article>
-<article class="panel quick-panel"><div class="panel-heading"><div><span class="eyebrow">QUICK ACTIONS</span><h3>What would you like to do?</h3></div></div><div class="quick-actions"><a href="students.html" class="quick-action"><span class="quick-icon sage">＋</span><span><strong>Add a student</strong><small>Create a student profile</small></span><b>↗</b></a><a href="rooms.html" class="quick-action"><span class="quick-icon sand">⌂</span><span><strong>Manage rooms</strong><small>Update room availability</small></span><b>↗</b></a><a href="applications.html" class="quick-action"><span class="quick-icon rose">◷</span><span><strong>Review applications</strong><small>Process new requests</small></span><b>↗</b></a><a href="payments.html" class="quick-action"><span class="quick-icon blue">₹</span><span><strong>Check payments</strong><small>Review fee records</small></span><b>↗</b></a></div></article>
-</section>
-<section class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">RECENT ACTIVITY</span><h3>Latest student records</h3></div><a href="students.html" class="text-link">View all students ↗</a></div><div class="table-wrap"><table><thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>ROOM</th><th>STATUS</th><th>JOINED</th></tr></thead><tbody id="recentStudents"></tbody></table></div></section>
-<footer class="footer"><span>© 2026 Haven Residence Management</span><span>Made for better student living <b>✳</b></span></footer>
-</main></div><script src="js/app.js"></script></body></html>
+
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <main class="main-area">
+
+    <!-- Header -->
+    <header class="topbar">
+
+      <button class="icon-btn mobile-menu" id="menuToggle" aria-label="Toggle menu">☰</button>
+
+      <div>
+        <span class="eyebrow">RESIDENCE MANAGEMENT</span>
+        <h1>Good morning, Admin <span class="wave">✳</span></h1>
+      </div>
+
+      <div class="top-actions">
+        <button class="icon-btn" title="Notifications">
+          ♧<i class="notification-dot"></i>
+        </button>
+
+        <div class="avatar">AD</div>
+
+        <div class="profile-label">
+          <strong>Administrator</strong>
+          <span>Residence manager</span>
+        </div>
+      </div>
+
+    </header>
+
+    <!-- Welcome banner -->
+    <section class="welcome-banner">
+
+      <div>
+        <span class="eyebrow light-eyebrow">
+          YOUR RESIDENCE AT A GLANCE
+        </span>
+
+        <h2>Everything in its<br><em>right place.</em></h2>
+
+        <p>Here's what's happening across your residence today.</p>
+
+        <a class="btn btn-light" href="applications.html">
+          Review applications <span>↗</span>
+        </a>
+      </div>
+
+      <div class="banner-art">
+        <div class="art-circle"></div>
+
+        <div class="art-building">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="art-leaf">✳</div>
+      </div>
+
+    </section>
+
+    <!-- Statistics -->
+    <section class="section-heading">
+      <div>
+        <span class="eyebrow">OVERVIEW</span>
+        <h2>Your residence, in numbers</h2>
+      </div>
+
+      <span class="date-pill">● Live overview</span>
+    </section>
+
+    <section class="stats-grid">
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Total students</span>
+          <span class="stat-icon sage">♙</span>
+        </div>
+
+        <strong id="statStudents">0</strong>
+
+        <div class="stat-foot">
+          <span class="trend">Student directory</span>
+          <a href="students.html">View →</a>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Total rooms</span>
+          <span class="stat-icon sand">⌂</span>
+        </div>
+
+        <strong id="statRooms">0</strong>
+
+        <div class="stat-foot">
+          <span class="trend">Room directory</span>
+          <a href="rooms.html">View →</a>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Available beds</span>
+          <span class="stat-icon blue">✳</span>
+        </div>
+
+        <strong id="statBeds">0</strong>
+
+        <div class="stat-foot">
+          <span class="trend">Room availability</span>
+          <a href="rooms.html">View →</a>
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Pending applications</span>
+          <span class="stat-icon rose">◷</span>
+        </div>
+
+        <strong id="statApplications">0</strong>
+
+        <div class="stat-foot">
+          <span class="trend warning-text">Needs attention</span>
+          <a href="applications.html">Review →</a>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Dashboard panels -->
+    <section class="dashboard-grid">
+
+      <!-- Room occupancy -->
+      <article class="panel occupancy-panel">
+
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">ROOM STATUS</span>
+            <h3>Occupancy overview</h3>
+          </div>
+
+          <a href="rooms.html" class="text-link">View rooms ↗</a>
+        </div>
+
+        <div class="occupancy-content">
+
+          <div class="donut">
+            <div>
+              <strong>—</strong>
+              <span>occupancy</span>
+            </div>
+          </div>
+
+          <div class="legend">
+            <div>
+              <i class="legend-dot dot-green"></i>
+              <span>Occupied</span>
+              <strong>—</strong>
+            </div>
+
+            <div>
+              <i class="legend-dot dot-yellow"></i>
+              <span>Partially filled</span>
+              <strong>—</strong>
+            </div>
+
+            <div>
+              <i class="legend-dot dot-gray"></i>
+              <span>Available</span>
+              <strong>—</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="progress-caption">
+          <span>Overall capacity</span>
+          <strong>See room records</strong>
+        </div>
+
+        <div class="progress">
+          <span style="width: 0%"></span>
+        </div>
+
+      </article>
+
+      <!-- Quick actions -->
+      <article class="panel quick-panel">
+
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">QUICK ACTIONS</span>
+            <h3>What would you like to do?</h3>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+
+          <a href="students.html" class="quick-action">
+            <span class="quick-icon sage">＋</span>
+
+            <span>
+              <strong>Manage students</strong>
+              <small>Create and update student profiles</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+          <a href="hostels.html" class="quick-action">
+            <span class="quick-icon sage">⌂</span>
+
+            <span>
+              <strong>Manage hostels</strong>
+              <small>Hostel buildings and locations</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+          <a href="room-types.html" class="quick-action">
+            <span class="quick-icon blue">▤</span>
+
+            <span>
+              <strong>Manage room types</strong>
+              <small>Room categories, capacity and fees</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+          <a href="rooms.html" class="quick-action">
+            <span class="quick-icon sand">⌂</span>
+
+            <span>
+              <strong>Manage rooms</strong>
+              <small>Update room details and availability</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+          <a href="applications.html" class="quick-action">
+            <span class="quick-icon rose">◷</span>
+
+            <span>
+              <strong>Review applications</strong>
+              <small>Process student requests</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+          <a href="allocations.html" class="quick-action">
+            <span class="quick-icon blue">⌂</span>
+
+            <span>
+              <strong>Manage allocations</strong>
+              <small>View room assignments</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+          <a href="payments.html" class="quick-action">
+            <span class="quick-icon sand">₹</span>
+
+            <span>
+              <strong>Manage payments</strong>
+              <small>Review hostel fee records</small>
+            </span>
+
+            <b>↗</b>
+          </a>
+
+        </div>
+
+      </article>
+
+    </section>
+
+    <!-- Recent student records -->
+    <section class="panel table-panel">
+
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">RECENT ACTIVITY</span>
+          <h3>Latest student records</h3>
+        </div>
+
+        <a href="students.html" class="text-link">
+          View all students ↗
+        </a>
+      </div>
+
+      <div class="table-wrap">
+
+        <table>
+          <thead>
+            <tr>
+              <th>STUDENT</th>
+              <th>STUDENT ID</th>
+              <th>ROOM</th>
+              <th>STATUS</th>
+              <th>JOINED</th>
+            </tr>
+          </thead>
+
+          <tbody id="recentStudents"></tbody>
+        </table>
+
+      </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>© 2026 Haven Residence Management</span>
+      <span>Made for better student living <b>✳</b></span>
+    </footer>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
